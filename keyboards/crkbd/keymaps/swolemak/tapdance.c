@@ -1,8 +1,10 @@
 #pragma once
+#include "capsword.c"
 
 // Tap Dance keycodes
 enum td_keycodes {
-    TD_MA
+    TD_MA,
+    TD_CW
 };
 
 // Define a type containing as many tapdance states as you need
@@ -23,8 +25,8 @@ td_state_t cur_dance(tap_dance_state_t *state);
 // `finished` and `reset` functions for each tapdance keycode
 void modalt_finished(tap_dance_state_t *state, void *user_data);
 void modalt_reset(tap_dance_state_t *state, void *user_data);
-
-
+void capsword_finished(tap_dance_state_t *state, void *user_data);
+void capsword_reset(tap_dance_state_t *state, void *user_data);
 
 // Determine the tapdance state to return
 td_state_t cur_dance(tap_dance_state_t *state) {
@@ -71,6 +73,43 @@ void modalt_reset(tap_dance_state_t *state, void *user_data) {
     }
 }
 
+void capsword_finished(tap_dance_state_t *state, void *user_data) {
+    td_state = cur_dance(state);
+    switch (td_state) {
+        // case TD_SINGLE_TAP:
+        //     set_oneshot_mods(MOD_BIT(KC_LSFT));
+        //     /* caps_word_toggle(); */
+        //     break;
+        case TD_SINGLE_HOLD:
+            clear_oneshot_mods();
+            register_mods(MOD_BIT(KC_LSFT));
+            break;
+        case TD_DOUBLE_SINGLE_TAP: 
+            caps_word_toggle(); 
+            break; 
+        default:
+            break;
+    }
+}
+
+void capsword_reset(tap_dance_state_t *state, void *user_data) {
+    switch (td_state) {
+        // case TD_SINGLE_TAP:
+        //     /* clear_oneshot_mods(); */
+        //     // break;
+        case TD_SINGLE_HOLD:
+            clear_oneshot_mods();
+            unregister_mods(MOD_BIT(KC_LSFT));
+            break;
+        case TD_DOUBLE_SINGLE_TAP: 
+            /* clear_oneshot_mods(); */
+            break; 
+        default:
+            break;
+    }
+}
+
 tap_dance_action_t tap_dance_actions[] = {
     [TD_MA] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, modalt_finished, modalt_reset),
+    [TD_CW] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, capsword_finished, capsword_reset),
 };

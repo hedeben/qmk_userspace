@@ -23,11 +23,21 @@ enum custom_keycodes {
   #include "oled.c"
 #endif
 
+#ifdef CAPS_WORD_ENABLE
+  #include "capsword.c"
+#endif
+
 #ifdef TAP_DANCE_ENABLE
   #include "tapdance.c"
   #define MOD_ALT TD(TD_MA)
+  #ifdef CAPS_WORD_ENABLE
+    #define SHIFT TD(TD_CW)
+  #else
+    #define SHIFT KC_LSFT
+  #endif
 #else
   #define MOD_ALT KC_ALT
+  #define SHIFT KC_LSFT
 #endif
 
 /*
@@ -46,7 +56,7 @@ SE_MICR // µ
 /* #define DEL_SYM LT(SYM,KC_DEL) */
 #define SPC_NAV LT(NAV, KC_SPC)
 /* #define TAB_NUM LT(FNNUM, KC_TAB) */
-#define OS_RALT  OSM(MOD_RALT)
+/* #define OS_RALT  OSM(MOD_RALT) */
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_COLEMAK_DH] = LAYOUT_split_3x6_3(
@@ -57,7 +67,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       MOD_ALT,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                         KC_K,    KC_H, KC_COMM,  KC_DOT, SE_MINS, KC_LGUI,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          MO(SYM), KC_LSFT, KC_BSPC,     KC_ENT, SPC_NAV, MO(FNUM)
+                                          MO(SYM),   SHIFT, KC_BSPC,     KC_ENT, SPC_NAV, MO(FNUM)
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -69,7 +79,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       MOD_ALT,    KC_Q,    KC_X,    KC_M,    KC_C,    KC_V,                         KC_K,    KC_P, KC_COMM,  KC_DOT, SE_MINS, KC_LGUI,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          MO(SYM), KC_LSFT, KC_BSPC,     KC_ENT, SPC_NAV, MO(FNUM)
+                                          MO(SYM),   SHIFT, KC_BSPC,     KC_ENT, SPC_NAV, MO(FNUM)
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -79,7 +89,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_RCTL,   KC_F5,   KC_F6,   KC_F7,   KC_F8, KC_PAUS,                      XXXXXXX,    KC_4,    KC_5,    KC_6,    KC_0, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      OS_RALT,   KC_F9,  KC_F10,  KC_F11,  KC_F12,  KC_INS,                      XXXXXXX,    KC_1,    KC_2,    KC_3,  KC_APP, _______,
+      _______,   KC_F9,  KC_F10,  KC_F11,  KC_F12,  KC_INS,                      XXXXXXX,    KC_1,    KC_2,    KC_3,  KC_APP, _______,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                          MO(RGBO), KC_CAPS,  KC_DEL,    _______, TG(NAV), _______
                                       //`--------------------------'  `--------------------------'

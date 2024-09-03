@@ -27,11 +27,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* #define EE_HANDS */
 
 /* #define QUICK_TAP_TERM 0 */
-#define TAPPING_TERM 200
+#define TAPPING_TERM 175
 
-/* #define CAPS_WORD_INVERT_ON_SHIFT */
-/* #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD */
-/* #define CAPS_WORD_IDLE_TIMEOUT 5000  // 5 seconds. */
+#define CAPS_WORD_INVERT_ON_SHIFT
+#define CAPS_WORD_IDLE_TIMEOUT 10000  // 10 seconds.
 
 #define OLED_BRIGHTNESS 128
 
